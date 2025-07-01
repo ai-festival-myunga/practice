@@ -41,7 +41,7 @@ def get_stock_price(ticker, date):
 def call_clova_api(prompt, system_message="당신은 금융 정보를 쉽고 친절하게 설명해주는 AI 비서입니다."):
     """Naver ClovaX LLM API를 호출하는 함수"""
     # 실제 키는 외부에 노출되지 않도록 환경 변수 등으로 관리하는 것이 안전합니다.
-    CLOVA_API_KEY = "여기에 입력"
+    CLOVA_API_KEY = "여기에 api"
     api_url = "https://clovastudio.stream.ntruss.com/testapp/v1/chat-completions/HCX-003"
     
     headers = {
@@ -76,9 +76,12 @@ def run_stock_agent(user_query: str):
     extraction_prompt = f"""
     사용자 질문에서 주식 종가 조회에 필요한 정보를 추출해줘.
     - 회사명 (예: 삼성전자)
+    그런데 사람들은 회사명을 종종 줄여 말하곤 해 니가 그건 감안해줘.
+    예를 들어 삼성전자 -> 삼전, 현대자동차 -> 현차 or 현대
     - 주식 티커 (예: 005930.KS)
     - 날짜 (YYYY-MM-DD 형식)
 
+    
     만약 정보가 없다면 "없음"이라고 출력해줘.
     질문: "{user_query}"
 
@@ -133,13 +136,13 @@ def run_stock_agent(user_query: str):
 if __name__ == "__main__":
     # --- 테스트 케이스 ---
     # 1. 주가 조회 (성공 케이스)
-    # user_question = "삼성전자의 2025년 6월 30일 종가는 얼마인가요?"
+    user_question = "현대차의 2025년 6월 30일 종가는 얼마인가요?"
     
     # 2. 주가 조회 (날짜가 주말인 케이스)
     # user_question = "SK하이닉스의 2024년 5월 11일 주가가 궁금해."
 
     # 3. 일반적인 질문
-    user_question = "오늘 날씨 어때? 그리고 현대차의 최신 뉴스는 뭐야?"
+    #user_question = "오늘 날씨 어때그리고 현대차의 최신 뉴스는 뭐야?"
     
     # 4. 사용자가 직접 질문 입력
     # user_question = input("무엇이 궁금하신가요? ")
