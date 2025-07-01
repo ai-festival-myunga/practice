@@ -4,6 +4,8 @@ import yfinance as yf
 import pandas as pd
 import re
 from datetime import datetime
+import os
+from dotenv import load_dotenv
 
 # --------------------------------------------------------------------------
 # Tool: yfinance 주가 조회 함수
@@ -41,7 +43,7 @@ def get_stock_price(ticker, date):
 def call_clova_api(prompt, system_message="당신은 금융 정보를 쉽고 친절하게 설명해주는 AI 비서입니다."):
     """Naver ClovaX LLM API를 호출하는 함수"""
     # 실제 키는 외부에 노출되지 않도록 환경 변수 등으로 관리하는 것이 안전합니다.
-    CLOVA_API_KEY = "여기에 api"
+    # CLOVA_API_KEY = "여기에 api"
     api_url = "https://clovastudio.stream.ntruss.com/testapp/v1/chat-completions/HCX-003"
     
     headers = {
@@ -134,18 +136,20 @@ def run_stock_agent(user_query: str):
 # Main Execution
 # --------------------------------------------------------------------------
 if __name__ == "__main__":
+    load_dotenv()
+    CLOVA_API_KEY = os.getenv('CLOVA_API_KEY')
     # --- 테스트 케이스 ---
     # 1. 주가 조회 (성공 케이스)
-    user_question = "현대차의 2025년 6월 30일 종가는 얼마인가요?"
+    # user_question = "현대차의 2025년 6월 30일 종가는 얼마인가요?"
     
     # 2. 주가 조회 (날짜가 주말인 케이스)
     # user_question = "SK하이닉스의 2024년 5월 11일 주가가 궁금해."
 
     # 3. 일반적인 질문
-    #user_question = "오늘 날씨 어때그리고 현대차의 최신 뉴스는 뭐야?"
+    # user_question = "오늘 날씨 어때그리고 현대차의 최신 뉴스는 뭐야?"
     
     # 4. 사용자가 직접 질문 입력
-    # user_question = input("무엇이 궁금하신가요? ")
+    user_question = input("무엇이 궁금하신가요? ")
 
     print(f"사용자 질문: {user_question}")
     print("-" * 20)
